@@ -1,71 +1,59 @@
 
-const Engine = Matter.Engine;
-const World = Matter.World;
-const Bodies = Matter.Bodies;
-const Body = Matter.Body;
+var runner,path;
+var bomb,drink;
+var power ,coin,edges;
+var runnerrunning,leftboundry;
+var rightboundry,coinImage;
+var pathImage;
+function preload(){
+  
+runnerrunning=loadAnimation("Runner-1.png","Runner-2.png");
+pathImage=loadImage("path.png")
+energyDrink=loadImage("energyDrink.png");
+coinImage=loadImage("coin.png");
+bombImage=loadImage("bomb.png");
+power=loadImage("power.png");
+}
 
-let engine;
-let world;
-
-var ground;
-
-var top_wall;
-var ball;
-
-var btn1;
-var btn2;
-function setup() {
+function setup(){
   createCanvas(400,400);
+ edges=createEdgeSprites();
+ path=createSprite(200,200);
+ path.addImage(pathImage)
+ runner=createSprite(180,340,50,170);
+runner.addAnimation("runner",runnerrunning);
 
-  engine = Engine.create();
-  world = engine.world;
-  
-   var ball_options = {
-    restitution: 0.95,
-  }
-   
-  
-  btn2 = createImg('up.png');
-  btn2.position(20,30);
-  btn2.size(50,50);
-  btn2.mouseClicked(vForce);
-  
-   
-  
-  
+coin=createSprite(200,200,80,90);
+coin.addImage(coinImage);
+coin.scale=0.3;
 
-  ground =new Ground(200,390,400,20);
+leftboundry=createSprite(0,0,100,800);
+leftboundry.visible=false;
+rightboundry=createSprite(410,0,100,800);
+rightboundry.visible=false;
 
 
-  ball = Bodies.circle(100,200,20,ball_options);
-  World.add(world,ball);
-  
-  
-  
 
-  rectMode(CENTER);
-  ellipseMode(RADIUS);
+  //create sprites here
 }
 
-
-function draw() 
-{
-  background(51);
-  Engine.update(engine);
+function draw() {
+  background(0);
   
-  
-
-  ellipse(ball.position.x,ball.position.y,20);
-  ground.show();
-  
-  Engine.update(engine);
+  text("0",20,230);
+  path.velocityY=5;
+ 
+  path.scale=1.2;
+  runner.x=World.mouseX
+    if(path.y>400){
+      path.y=height/2
+    }
+    //if (runner.isTouching(coin)){
+      //coinscore=coinsore+1;
+    //}//
+    runner.collide(leftboundry)
+    runner.collide(rightboundry)
+    edges=createEdgeSprites()
+   runner.collide(edges)
+drawSprites();
 }
-
-
-function vForce()
-{
-  Matter.Body.applyForce(ball,{x:0,y:0},{x:0,y:-0.05});
-}
-  
-
-
